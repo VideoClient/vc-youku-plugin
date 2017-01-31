@@ -1,9 +1,10 @@
-/// <reference path="../../app/ts/Model/index.ts" types="Video VideoCollection ISearchAdapter" />
+/// <reference path="../../app/ts/Model/resource.ts"/>
 
 const Youku = require('youku-client');
 
 module.exports = vcapi => {
     const {Video, VideoCollection} = vcapi
+    let v = vcapi as VideoCollection
     
     class YoukuAdapter implements ISearchAdapter {
         static client_id = 'd69a5ea43a68899c9'
