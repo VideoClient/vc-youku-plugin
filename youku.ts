@@ -1,74 +1,85 @@
+/// <reference path="../../app/ts/Model/index.ts" types="Video VideoCollection ISearchAdapter" />
+
 const Youku = require('youku-client');
-import {Video, VideoCollection} from '../resource'
 
-export class YoukuAdapter{
-    static client_id = 'd69a5ea43a68899c9'
-    static client_secret = 'kfd2606fc758a3f55fc61ee06fdc4d451'
+module.exports = vcapi => {
+    import {Video, VideoCollection} = vcapi
+    
+    class YoukuAdapter implements ISearchAdapter {
+        static client_id = 'd69a5ea43a68899c9'
+        static client_secret = 'kfd2606fc758a3f55fc61ee06fdc4d451'
 
-    async search_show(name: string, page: number): Promise<VideoCollection[]> {
-        return new Promise<VideoCollection[]>((fulfill, reject) => {
-            this.client.get('searches/show/by_keyword', {
-                keyword: name,
-                unite: 1,
-                page: page,
-                count: 20
-            }, function(err, video: SearchShowResult, resp) {
-                if (err) {
-                    reject(err)
-                }
-                console.log(video);
-                let videos:VideoCollection[] = []
-                for (var v of video.shows) {
-                    let newv = new VideoCollection()
-                    newv.name = v.name
-                    newv.poster = v.bigPoster
-                    newv.url = v.link
-                    newv.raw = v
-                    videos.push(newv)
-                }
-                fulfill(videos)
-            });           
+        async search_show(name: string, page: number): Promise<VideoCollection[]> {
+            return new Promise<VideoCollection[]>((fulfill, reject) => {
+                this.client.get('searches/show/by_keyword', {
+                    keyword: name,
+                    unite: 1,
+                    page: page,
+                    count: 20
+                }, function(err, video: SearchShowResult, resp) {
+                    if (err) {
+                        reject(err)
+                    }
+                    console.log(video);
+                    let videos:VideoCollection[] = []
+                    for (var v of video.shows) {
+                        let newv = new VideoCollection()
+                        newv.name = v.name
+                        newv.poster = v.bigPoster
+                        newv.url = v.link
+                        newv.raw = v
+                        videos.push(newv)
+                    }
+                    fulfill(videos)
+                });           
+            });
+        }
+
+        async search_video(name: string, page: number): Promise<Video[]> {
+            return new Promise<Video[]>((fulfill, reject) => {
+                this.client.get('searches/video/by_keyword', {
+                    keyword: name,
+                    page: page,
+                    count: 20
+                }, function(err, video: SearchShowResult, resp) {
+                    if (err) {
+                        reject(err)
+                    }
+                    let videos:Video[] = []
+                    for (var v of video.shows) {
+                        let newv = new Video()
+                        newv.name = v.name
+                        newv.thumbnail = v.bigThumbnail
+                        newv.url = v.play_link
+                        newv.raw = v
+                        videos.push(newv)
+                    }
+                    console.log(video);
+                    fulfill(videos)
+                });           
+            });
+        }
+
+        client = new Youku({
+            client_id: YoukuAdapter.client_id.substr(1),
+            client_secret: YoukuAdapter.client_secret.substr(1)
         });
     }
 
-    async search_video(name: string, page: number): Promise<Video[]> {
-        return new Promise<Video[]>((fulfill, reject) => {
-            this.client.get('searches/video/by_keyword', {
-                keyword: name,
-                page: page,
-                count: 20
-            }, function(err, video: SearchShowResult, resp) {
-                if (err) {
-                    reject(err)
-                }
-                let videos:Video[] = []
-                for (var v of video.shows) {
-                    let newv = new Video()
-                    newv.name = v.name
-                    newv.thumbnail = v.bigThumbnail
-                    newv.url = v.play_link
-                    newv.raw = v
-                    videos.push(newv)
-                }
-                console.log(video);
-                fulfill(videos)
-            });           
-        });
+
+    return {
+        'search_adapter': YoukuAdapter
     }
 
-    client = new Youku({
-        client_id: YoukuAdapter.client_id.substr(1),
-        client_secret: YoukuAdapter.client_secret.substr(1)
-    });
 }
 
 
-export interface SearchShowResult {
+interface SearchShowResult {
     shows: YoukuVideo[]
     total: string // 总共个数
 }
 
-export interface YoukuVideo {
+interface YoukuVideo {
     bigPoster: string       // 纵向海报
     bigThumbnail: string    // 横向截屏
     completed: number       // 是否完结
