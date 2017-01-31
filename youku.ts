@@ -3,7 +3,7 @@
 const Youku = require('youku-client');
 
 module.exports = vcapi => {
-    import {Video, VideoCollection} = vcapi
+    const {Video, VideoCollection} = vcapi
     
     class YoukuAdapter implements ISearchAdapter {
         static client_id = 'd69a5ea43a68899c9'
