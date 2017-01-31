@@ -1,10 +1,10 @@
-/// <reference path="../../app/ts/Model/resource.ts"/>
+import {Video, VideoCollection} from '../../app/ts/Model/resource';
+import {ISearchAdapter} from '../../app/ts/Model/res-adapter';
 
 const Youku = require('youku-client');
 
 module.exports = vcapi => {
     const {Video, VideoCollection} = vcapi
-    let v = vcapi as VideoCollection
     
     class YoukuAdapter implements ISearchAdapter {
         static client_id = 'd69a5ea43a68899c9'
@@ -35,6 +35,9 @@ module.exports = vcapi => {
                 });           
             });
         }
+        async search_album(name: string, page: number): Promise<VideoCollection[]> {
+            return null
+        }
 
         async search_video(name: string, page: number): Promise<Video[]> {
             return new Promise<Video[]>((fulfill, reject) => {
@@ -60,6 +63,8 @@ module.exports = vcapi => {
                 });           
             });
         }
+
+
 
         client = new Youku({
             client_id: YoukuAdapter.client_id.substr(1),
