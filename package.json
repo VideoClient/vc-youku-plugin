@@ -1,0 +1,24 @@
+{
+  "name": "vc-youku-plugin",
+  "version": "0.1.0",
+  "description": "Youku website plugin",
+  "main": "youku.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VideoClient/vc-youku-plugin.git"
+  },
+  "keywords": [
+    "video-client",
+    "youku",
+    "plugin"
+  ],
+  "author": "sxf",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/VideoClient/vc-youku-plugin/issues"
+  },
+  "homepage": "https://github.com/VideoClient/vc-youku-plugin#readme"
+}
