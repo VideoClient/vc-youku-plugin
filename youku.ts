@@ -74,7 +74,7 @@ module.exports = vcapi => {
 
 
     return {
-        'search_adapter': YoukuAdapter
+        search_adapter: YoukuAdapter
     }
 
 }
