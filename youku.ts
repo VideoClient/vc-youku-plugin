@@ -1,5 +1,5 @@
 import {Video, VideoCollection} from '../../app/ts/Model/resource';
-import {ISearchAdapter} from '../../app/ts/Model/res-adapter';
+import {ISearchAdapter, IClassifiedVideoAdapter} from '../../app/ts/Model/res-adapter';
 
 const Youku = require('youku-client');
 
@@ -18,10 +18,12 @@ module.exports = vcapi => {
                     page: page,
                     count: 20
                 }, function(err, video: SearchShowResult, resp) {
+                    console.log("err:", err);
+                    console.log("video:", video);
+                    console.log("resp:", resp);
                     if (err) {
                         reject(err)
                     }
-                    console.log(video);
                     let videos:VideoCollection[] = []
                     for (var v of video.shows) {
                         let newv = new VideoCollection()
@@ -74,7 +76,7 @@ module.exports = vcapi => {
 
 
     return {
-        search_adapter: YoukuAdapter
+        search_adapter: new YoukuAdapter()
     }
 
 }
