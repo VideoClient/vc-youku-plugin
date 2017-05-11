@@ -1,5 +1,5 @@
-import {Video, VideoCollection} from '../../app/ts/Model/resource';
-import {ISearchAdapter, IClassifiedVideoAdapter} from '../../app/ts/Model/res-adapter';
+import {Video, VideoCollection} from '../../ts/Model/resource';
+import {ISearchAdapter, IClassifiedVideoAdapter} from '../../ts/Model/res-adapter';
 
 const Youku = require('youku-client');
 
